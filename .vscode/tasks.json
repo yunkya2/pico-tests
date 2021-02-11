@@ -1,0 +1,100 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "make",
+            "type": "shell",
+            "command": "make -j4",
+            "options": {
+                "cwd": "${workspaceFolder}/build/${relativeFileDirname}"
+            },
+            "presentation": {
+                "revealProblems": "onProblem"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "make (verbose)",
+            "type": "shell",
+            "command": "make VERBOSE=1",
+            "options": {
+                "cwd": "${workspaceFolder}/build/${relativeFileDirname}"
+            },
+            "presentation": {
+                "revealProblems": "onProblem"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build"
+        },
+        {
+            "label": "clean",
+            "type": "shell",
+            "command": "make clean",
+            "options": {
+                "cwd": "${workspaceFolder}/build/${relativeFileDirname}"
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "install",
+            "type": "shell",
+            "command": "pico-install",
+            "args": [
+                "*.uf2"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}/build/${relativeFileDirname}"
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "distclean",
+            "type": "shell",
+            "command": "rm -rf ${workspaceFolder}/build",
+            "problemMatcher": [],
+            "group": "build"
+        },
+        {
+            "label": "cmake",
+            "type": "shell",
+            "command": "mkdir build; (cd build; cmake .. -DCMAKE_BUILD_TYPE=${input:buildType} -DPICO_DEFAULT_BINARY_TYPE=${input:binaryType})",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [],
+            "group": "build"
+        },
+    ],
+    "inputs": [
+        {
+            "type": "pickString",
+            "id": "buildType",
+            "description": "Build Type",
+            "options": [
+                "Release",
+                "Debug"
+            ],
+            "default": "Debug"
+        },
+                {
+            "type": "pickString",
+            "id": "binaryType",
+            "description": "Binary Type",
+            "options": [
+                "default",
+                "no_flash",
+                "copy_to_ram",
+                "blocked_ram"
+            ],
+            "default": "default"
+        }
+
+    ]
+}
