@@ -1,0 +1,120 @@
+//
+//      I2S 16bit stereo
+//
+
+.program i2s_16s
+.side_set 2
+
+                                  ;        /--- LRCLK
+                                  ;        |/-- BCLK
+                                  ;        ||
+            out null, 16            side 0b01
+            out pins, 1             side 0b00
+            set x, 13               side 0b01
+i2s_16s_1:  out pins, 1             side 0b00
+            jmp x--, i2s_16s_1      side 0b01
+            out pins, 1             side 0b10
+            out null, 16            side 0b11
+            out pins, 1             side 0b10
+            set x, 13               side 0b11
+i2s_16s_2:  out pins, 1             side 0b10
+            jmp x--, i2s_16s_2      side 0b11
+            out pins, 1             side 0b00
+
+
+//
+//      I2S 16bit mono
+//
+
+.program i2s_16m
+.side_set 2
+
+                                  ;        /--- LRCLK
+                                  ;        |/-- BCLK
+                                  ;        ||
+            pull block              side 0b00
+            out null, 16            side 0b01
+            mov y, osr              side 0b01
+            out pins, 1             side 0b00 [1]
+            set x, 13               side 0b01 [1]
+i2s_16m_1:  out pins, 1             side 0b00 [1]
+            jmp x--, i2s_16m_1      side 0b01 [1]
+            out pins, 1             side 0b10 [1]
+            mov osr, y              side 0b11
+            set x, 14               side 0b11
+i2s_16m_2:  out pins, 1             side 0b10 [1]
+            jmp x--, i2s_16m_2      side 0b11 [1]
+            out pins, 1             side 0b00
+
+
+//
+//      I2S 8bit stereo
+//
+
+.program i2s_8s
+.side_set 2	
+
+                                  ;        /--- LRCLK
+                                  ;        |/-- BCLK
+                                  ;        ||
+            pull block              side 0b00
+            out null, 24            side 0b00
+            mov osr, !osr           side 0b01 [1]
+            out pins, 1             side 0b00 [1]
+            mov osr, !osr           side 0b01
+            set x, 6                side 0b01
+i2s_8s_1:   out pins, 1             side 0b00 [1]
+            jmp x--, i2s_8s_1       side 0b01 [1]
+            set pins, 0             side 0b00 [1]
+            set x, 5                side 0b01 [1]
+i2s_8s_2:   nop                     side 0b00 [1]
+            jmp x--, i2s_8s_2       side 0b01 [1]
+            pull block              side 0b10
+            out null, 24            side 0b10
+            mov osr, !osr           side 0b11 [1]
+            out pins, 1             side 0b10 [1]
+            mov osr, !osr           side 0b11
+            set x, 6                side 0b11
+i2s_8s_3:   out pins, 1             side 0b10 [1]
+            jmp x--, i2s_8s_3       side 0b11 [1]
+            set pins, 0             side 0b10 [1]
+            set x, 5                side 0b11 [1]
+i2s_8s_4:   nop                     side 0b10 [1]
+            jmp x--, i2s_8s_4       side 0b11 [1]
+
+    
+//
+//      I2S 8bit mono
+//
+
+.program i2s_8m
+.side_set 2	
+
+                                  ;        /--- LRCLK
+                                  ;        |/-- BCLK
+                                  ;        ||
+            pull block              side 0b00
+            out null, 24            side 0b00
+            mov osr, !osr           side 0b01
+            mov y, osr              side 0b01
+            out pins, 1             side 0b00 [1]
+            mov osr, !osr           side 0b01
+            set x, 6                side 0b01
+i2s_8m_1:   out pins, 1             side 0b00 [1]
+            jmp x--, i2s_8m_1       side 0b01 [1]
+            set pins, 0             side 0b00 [1]
+            set x, 5                side 0b01 [1]
+i2s_8m_2:   nop                     side 0b00 [1]
+            jmp x--, i2s_8m_2       side 0b01 [1]
+            nop                     side 0b10 [1]
+            mov osr, y              side 0b11 [1]
+            out pins, 1             side 0b10 [1]
+            mov osr, !osr           side 0b11
+            set x, 6                side 0b11
+i2s_8m_3:   out pins, 1             side 0b10 [1]
+            jmp x--, i2s_8m_3       side 0b11 [1]
+            set pins, 0             side 0b10 [1]
+            set x, 5                side 0b11 [1]
+i2s_8m_4:   nop                     side 0b10 [1]
+            jmp x--, i2s_8m_4       side 0b11 [1]
+

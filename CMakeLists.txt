@@ -13,3 +13,5 @@ pico_sdk_init()
 
 add_subdirectory(divtest)
 add_subdirectory(divtime)
+
+add_subdirectory(i2s-piotest)
